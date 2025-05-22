@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ClimaCast - Your Personal Weather & Style Assistant</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com/3.4.16"></script>
+<script>tailwind.config={theme:{extend:{colors:{primary:'#4A9FE6',secondary:'#FFB84D'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
+<style>
+:where([class^="ri-"])::before { content: "\f3c2"; }
+.animate-float {
+animation: float 3s ease-in-out infinite;
+}
+@keyframes float {
+0% { transform: translateY(0px); }
+50% { transform: translateY(-10px); }
+100% { transform: translateY(0px); }
+}
+.custom-checkbox {
+appearance: none;
+-webkit-appearance: none;
+width: 20px;
+height: 20px;
+border: 2px solid #4A9FE6;
+border-radius: 4px;
+outline: none;
+cursor: pointer;
+position: relative;
+}
+.custom-checkbox:checked {
+background-color: #4A9FE6;
+}
+.custom-checkbox:checked::after {
+content: '';
+position: absolute;
+top: 3px;
+left: 6px;
+width: 6px;
+height: 10px;
+border: solid white;
+border-width: 0 2px 2px 0;
+transform: rotate(45deg);
+}
+</style>
+</head>
+<body class="font-sans bg-white">
+<!-- Header -->
+<header class="fixed w-full bg-white shadow-sm z-50">
+<div class="container mx-auto px-4 py-3 flex items-center justify-between">
+<div class="flex items-center">
+<div class="w-10 h-10 flex items-center justify-center mr-2">
+<img src="https://readdy.ai/api/search-image?query=weather%2520app%2520logo%2520with%2520sun%2520and%2520cloud%2520and%2520hanger%2520icon%2C%2520blue%2520and%2520yellow%2520colors%2C%2520clean%2520modern%2520design%2C%2520professional%2520branding%2C%2520minimalist%2520style&width=100&height=100&seq=logo1&orientation=squarish" alt="ClimaCast Logo" class="h-10">
+</div>
+<span class="text-2xl font-bold text-gray-900">ClimaCast</span>
+</div>
+<nav class="hidden md:flex items-center space-x-8">
+<a href="#home" class="text-gray-700 hover:text-primary font-medium">Home</a>
+<a href="#features" class="text-gray-700 hover:text-primary font-medium">Features</a>
+<a href="#how-it-works" class="text-gray-700 hover:text-primary font-medium">How It Works</a>
+<a href="#contact" class="text-gray-700 hover:text-primary font-medium">Contact</a>
+</nav>
+<div class="flex items-center space-x-4">
+<a href="https://tally.so/r/nWQygR" class="hidden md:block text-gray-700 hover:text-primary font-medium">Manage Subscription</a>
+<a href="https://tally.so/r/3xo25k" class="bg-primary text-white px-4 py-2 !rounded-button whitespace-nowrap font-medium hover:bg-opacity-90 transition-all">Sign Up</a>
+<button class="md:hidden w-10 h-10 flex items-center justify-center text-gray-700" id="mobile-menu-button">
+<i class="ri-menu-line ri-lg"></i>
+</button>
+</div>
+</div>
+<!-- Mobile Menu -->
+<div class="md:hidden hidden bg-white w-full py-4 px-4 shadow-md" id="mobile-menu">
+<nav class="flex flex-col space-y-4">
+<a href="#home" class="text-gray-700 hover:text-primary font-medium">Home</a>
+<a href="#features" class="text-gray-700 hover:text-primary font-medium">Features</a>
+<a href="#how-it-works" class="text-gray-700 hover:text-primary font-medium">How It Works</a>
+<a href="#contact" class="text-gray-700 hover:text-primary font-medium">Contact</a>
+<a href="https://tally.so/r/nWQygR" class="text-gray-700 hover:text-primary font-medium">Manage Subscription</a>
+</nav>
+</div>
+</header>
+<!-- Hero Section -->
+<section id="home" class="pt-24 pb-16 md:pt-32 md:pb-24 relative overflow-hidden">
+<div class="absolute inset-0 z-0" style="background-image: url('https://readdy.ai/api/search-image?query=beautiful%2520weather%2520scene%2520with%2520gradient%2520from%2520sunny%2520blue%2520sky%2520to%2520white%2520clouds%2C%2520modern%2520minimalist%2520style%2C%2520light%2520and%2520airy%2C%2520soft%2520colors%2C%2520perfect%2520for%2520website%2520hero%2520background%2C%2520left%2520side%2520should%2520be%2520lighter%2520with%2520subtle%2520gradient%2520to%2520allow%2520text%2520readability%2C%2520professional%2520clean%2520design&width=1920&height=1080&seq=hero1&orientation=landscape'); background-size: cover; background-position: center; opacity: 0.9;"></div>
+<div class="container mx-auto px-4 relative z-10">
+<div class="flex flex-col md:flex-row items-center">
+<div class="w-full md:w-1/2 mb-10 md:mb-0">
+<h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">Your Personal Weather & Style Assistant</h1>
+<p class="text-xl text-gray-700 mb-8">Daily WhatsApp updates with weather forecasts, outfit suggestions, and motivational quotes delivered right when you need them.</p>
+<div class="flex flex-col sm:flex-row gap-4">
+<a href="https://tally.so/r/3xo25k" class="bg-primary text-white px-6 py-3 !rounded-button whitespace-nowrap font-medium hover:bg-opacity-90 transition-all text-center flex items-center justify-center gap-2">
+<i class="ri-calendar-check-line ri-lg"></i>
+Start 7-Day Free Trial
+</a>
+<a href="https://tally.so/r/nWQygR" class="border border-gray-300 bg-white text-gray-700 px-6 py-3 !rounded-button whitespace-nowrap font-medium hover:bg-gray-50 transition-all text-center flex items-center justify-center gap-2">
+<i class="ri-settings-line ri-lg"></i>
+Manage Subscription
+</a>
+</div>
+<div class="mt-6 text-gray-600 flex items-center">
+<div class="w-5 h-5 flex items-center justify-center mr-2">
+<i class="ri-check-line ri-lg text-primary"></i>
+</div>
+<span>No credit card required for trial</span>
+</div>
+</div>
+<div class="w-full md:w-1/2 flex justify-center">
+<div class="relative w-full max-w-md">
+<div class="bg-white rounded-xl shadow-xl p-6 border border-gray-100">
+<div class="flex items-center mb-4">
+<div class="w-10 h-10 flex items-center justify-center mr-3 bg-green-500 rounded-full">
+<i class="ri-whatsapp-line ri-lg text-white"></i>
+</div>
+<div>
+<h3 class="font-bold text-gray-900">ClimaCast</h3>
+<p class="text-sm text-gray-500">Today, 7:30 AM</p>
+</div>
+</div>
+<div class="space-y-4">
+<div class="bg-gray-100 rounded-lg p-4">
+<p class="font-medium">Good morning, Emma! 🌤️</p>
+<p class="mt-2">Today in London: 18°C, Partly Cloudy</p>
+<p class="mt-2">Outfit suggestion: Light jacket, t-shirt, and jeans would be perfect for today's weather.</p>
+</div>
+<div class="bg-gray-100 rounded-lg p-4">
+<p class="italic">"The only way to do great work is to love what you do." - Steve Jobs</p>
+<p class="mt-2">Have a wonderful Thursday!</p>
+</div>
+</div>
+</div>
+<div class="absolute -top-4 -left-4 w-16 h-16 bg-yellow-400 rounded-full animate-float opacity-90"></div>
+<div class="absolute -bottom-6 -right-6 w-20 h-20 bg-primary rounded-full animate-float opacity-80" style="animation-delay: 1s;"></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Features Section -->
+<section id="features" class="py-16 bg-gray-50">
+<div class="container mx-auto px-4">
+<div class="text-center mb-16">
+<h2 class="text-3xl font-bold text-gray-900 mb-4">Smart Features for Your Daily Routine</h2>
+<p class="text-xl text-gray-600 max-w-3xl mx-auto">ClimaCast combines weather data, style recommendations, and inspiration to help you start your day prepared and motivated.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Feature 1 -->
+<div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100 hover:shadow-md transition-all">
+<div class="w-16 h-16 flex items-center justify-center bg-blue-100 rounded-full mb-6 mx-auto">
+<i class="ri-cloud-line ri-2x text-primary"></i>
+</div>
+<h3 class="text-xl font-bold text-gray-900 mb-3 text-center">Accurate Weather Forecasts</h3>
+<p class="text-gray-600 text-center">Get precise, location-based weather updates delivered directly to your WhatsApp every morning.</p>
+<div class="mt-6 bg-gray-50 rounded-lg p-4">
+<div class="flex items-center justify-between mb-2">
+<span class="text-gray-700 font-medium">London</span>
+<span class="text-primary font-medium">18°C</span>
+</div>
+<div class="flex items-center space-x-2">
+<div class="w-8 h-8 flex items-center justify-center">
+<i class="ri-sun-cloudy-line ri-lg text-yellow-500"></i>
+</div>
+<span class="text-gray-600">Partly Cloudy</span>
+</div>
+</div>
+</div>
+<!-- Feature 2 -->
+<div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100 hover:shadow-md transition-all">
+<div class="w-16 h-16 flex items-center justify-center bg-yellow-100 rounded-full mb-6 mx-auto">
+<i class="ri-t-shirt-line ri-2x text-secondary"></i>
+</div>
+<h3 class="text-xl font-bold text-gray-900 mb-3 text-center">Smart Outfit Suggestions</h3>
+<p class="text-gray-600 text-center">Receive personalized clothing recommendations based on the day's forecast and your preferences.</p>
+<div class="mt-6 bg-gray-50 rounded-lg p-4">
+<p class="text-gray-700 mb-2 font-medium">Today's Outfit Suggestion:</p>
+<div class="flex items-center space-x-3">
+<div class="w-8 h-8 flex items-center justify-center">
+<i class="ri-shirt-line ri-lg text-blue-500"></i>
+</div>
+<span class="text-gray-600">Light jacket</span>
+</div>
+<div class="flex items-center space-x-3 mt-2">
+<div class="w-8 h-8 flex items-center justify-center">
+<i class="ri-t-shirt-line ri-lg text-indigo-500"></i>
+</div>
+<span class="text-gray-600">Cotton t-shirt</span>
+</div>
+</div>
+</div>
+<!-- Feature 3 -->
+<div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100 hover:shadow-md transition-all">
+<div class="w-16 h-16 flex items-center justify-center bg-green-100 rounded-full mb-6 mx-auto">
+<i class="ri-chat-quote-line ri-2x text-green-600"></i>
+</div>
+<h3 class="text-xl font-bold text-gray-900 mb-3 text-center">Daily Inspiration</h3>
+<p class="text-gray-600 text-center">Start your day with motivational quotes and positive affirmations to boost your mood.</p>
+<div class="mt-6 bg-gray-50 rounded-lg p-4">
+<div class="w-8 h-8 flex items-center justify-center mb-2 mx-auto">
+<i class="ri-double-quotes-l ri-lg text-gray-400"></i>
+</div>
+<p class="text-gray-700 text-center italic">"The only way to do great work is to love what you do."</p>
+<p class="text-gray-500 text-center mt-2">- Steve Jobs</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- How It Works -->
+<section id="how-it-works" class="py-16">
+<div class="container mx-auto px-4">
+<div class="text-center mb-16">
+<h2 class="text-3xl font-bold text-gray-900 mb-4">How ClimaCast Works</h2>
+<p class="text-xl text-gray-600 max-w-3xl mx-auto">Getting started with ClimaCast is simple. Just follow these three easy steps.</p>
+</div>
+<div class="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16">
+<div class="w-full md:w-1/2 max-w-lg">
+<div class="bg-white rounded-xl shadow-lg overflow-hidden">
+<div class="relative" style="padding-top: 56.25%;">
+<div class="absolute inset-0 bg-gray-200 flex items-center justify-center">
+<img src="https://readdy.ai/api/search-image?query=smartphone%2520displaying%2520weather%2520app%2520with%2520clothing%2520suggestions%2C%2520professional%2520product%2520photography%2C%2520clean%2520background%2C%2520high%2520quality%2C%2520detailed%2520UI%2520showing%2520weather%2520forecast%2520and%2520outfit%2520recommendations&width=800&height=450&seq=demo1&orientation=landscape" alt="ClimaCast Demo" class="w-full h-full object-cover">
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="w-16 h-16 flex items-center justify-center bg-primary bg-opacity-90 rounded-full cursor-pointer hover:bg-opacity-100 transition-all">
+<i class="ri-play-fill ri-2x text-white"></i>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="w-full md:w-1/2">
+<div class="space-y-8">
+<!-- Step 1 -->
+<div class="flex">
+<div class="flex-shrink-0 mr-4">
+<div class="w-10 h-10 flex items-center justify-center bg-primary rounded-full text-white font-bold">1</div>
+</div>
+<div>
+<h3 class="text-xl font-bold text-gray-900 mb-2">Sign Up for Free Trial</h3>
+<p class="text-gray-600">Create your account and start with a 7-day free trial. No credit card required to get started.</p>
+</div>
+</div>
+<!-- Step 2 -->
+<div class="flex">
+<div class="flex-shrink-0 mr-4">
+<div class="w-10 h-10 flex items-center justify-center bg-primary rounded-full text-white font-bold">2</div>
+</div>
+<div>
+<h3 class="text-xl font-bold text-gray-900 mb-2">Set Your Preferences</h3>
+<p class="text-gray-600">Choose your location, preferred time to receive updates, and customize your style preferences.</p>
+</div>
+</div>
+<!-- Step 3 -->
+<div class="flex">
+<div class="flex-shrink-0 mr-4">
+<div class="w-10 h-10 flex items-center justify-center bg-primary rounded-full text-white font-bold">3</div>
+</div>
+<div>
+<h3 class="text-xl font-bold text-gray-900 mb-2">Receive Daily Updates</h3>
+<p class="text-gray-600">Get your personalized weather forecast, outfit suggestions, and inspirational quote delivered to WhatsApp every day.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Testimonials -->
+<section class="py-16 bg-gray-50">
+<div class="container mx-auto px-4">
+<div class="text-center mb-16">
+<h2 class="text-3xl font-bold text-gray-900 mb-4">What Our Users Say</h2>
+<p class="text-xl text-gray-600 max-w-3xl mx-auto">Join thousands of satisfied users who start their day with ClimaCast.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Testimonial 1 -->
+<div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+<div class="flex items-center mb-4">
+<div class="w-5 h-5 flex items-center justify-center text-yellow-400">
+<i class="ri-star-fill"></i>
+</div>
+<div class="w-5 h-5 flex items-center justify-center text-yellow-400">
+<i class="ri-star-fill"></i>
+</div>
+<div class="w-5 h-5 flex items-center justify-center text-yellow-400">
+<i class="ri-star-fill"></i>
+</div>
+<div class="w-5 h-5 flex items-center justify-center text-yellow-400">
+<i class="ri-star-fill"></i>
+</div>
+<div class="w-5 h-5 flex items-center justify-center text-yellow-400">
+<i class="ri-star-fill"></i>
+</div>
+</div>
+<p class="text-gray-600 mb-4">"ClimaCast has completely changed my morning routine. I no longer have to check multiple apps for weather and outfit ideas. Everything comes directly to my WhatsApp!"</p>
+<div class="flex items-center">
+<div class="w-10 h-10 flex items-center justify-center bg-blue-100 rounded-full mr-3">
+<span class="text-primary font-medium">RJ</span>
+</div>
+<div>
+<h4 class="font-medium text-gray-900">Rachel Johnson</h4>
+<p class="text-sm text-gray-500">London, UK</p>
+</div>
+</div>
+</div>
+<!-- Testimonial 2 -->
+<div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+<div class="flex items-center mb-4">
+<div class="w-5 h-5 flex items-center justify-center text-yellow-400">
+<i class="ri-star-fill"></i>
+</div>
+<div class="w-5 h-5 flex items-center justify-center text-yellow-400">
+<i class="ri-star-fill"></i>
+</div>
+<div class="w-5 h-5 flex items-center justify-center text-yellow-400">
+<i class="ri-star-fill"></i>
+</div>
+<div class="w-5 h-5 flex items-center justify-center text-yellow-400">
+<i class="ri-star-fill"></i>
+</div>
+<div class="w-5 h-5 flex items-center justify-center text-yellow-400">
+<i class="ri-star-half-fill"></i>
+</div>
+</div>
+<p class="text-gray-600 mb-4">"The outfit suggestions are spot-on! I love how it considers the actual weather conditions, not just the temperature. The daily quotes are a nice bonus too."</p>
+<div class="flex items-center">
+<div class="w-10 h-10 flex items-center justify-center bg-green-100 rounded-full mr-3">
+<span class="text-green-600 font-medium">MP</span>
+</div>
+<div>
+<h4 class="font-medium text-gray-900">Michael Patterson</h4>
+<p class="text-sm text-gray-500">New York, USA</p>
+</div>
+</div>
+</div>
+<!-- Testimonial 3 -->
+<div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+<div class="flex items-center mb-4">
+<div class="w-5 h-5 flex items-center justify-center text-yellow-400">
+<i class="ri-star-fill"></i>
+</div>
+<div class="w-5 h-5 flex items-center justify-center text-yellow-400">
+<i class="ri-star-fill"></i>
+</div>
+<div class="w-5 h-5 flex items-center justify-center text-yellow-400">
+<i class="ri-star-fill"></i>
+</div>
+<div class="w-5 h-5 flex items-center justify-center text-yellow-400">
+<i class="ri-star-fill"></i>
+</div>
+<div class="w-5 h-5 flex items-center justify-center text-yellow-400">
+<i class="ri-star-fill"></i>
+</div>
+</div>
+<p class="text-gray-600 mb-4">"I travel frequently for work, and ClimaCast has been a lifesaver. It automatically updates based on my current location, so I'm always prepared no matter where I am."</p>
+<div class="flex items-center">
+<div class="w-10 h-10 flex items-center justify-center bg-purple-100 rounded-full mr-3">
+<span class="text-purple-600 font-medium">SK</span>
+</div>
+<div>
+<h4 class="font-medium text-gray-900">Sarah Kim</h4>
+<p class="text-sm text-gray-500">Toronto, Canada</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- CTA Section -->
+<section class="py-16 bg-gradient-to-r from-primary to-blue-600 text-white">
+<div class="container mx-auto px-4">
+<div class="max-w-3xl mx-auto text-center">
+<h2 class="text-3xl font-bold mb-6">Ready to Transform Your Morning Routine?</h2>
+<p class="text-xl mb-8 opacity-90">Start your 7-day free trial today and experience the convenience of personalized weather updates and outfit suggestions.</p>
+<div class="flex flex-col sm:flex-row gap-4 justify-center">
+<a href="https://tally.so/r/3xo25k" class="bg-white text-primary px-8 py-3 !rounded-button whitespace-nowrap font-medium hover:bg-opacity-90 transition-all text-center">
+Start Free Trial
+</a>
+<a href="https://tally.so/r/nWQygR" class="border border-white bg-transparent text-white px-8 py-3 !rounded-button whitespace-nowrap font-medium hover:bg-white hover:bg-opacity-10 transition-all text-center">
+Manage Subscription
+</a>
+</div>
+<p class="mt-6 text-sm opacity-80">No credit card required. Cancel anytime.</p>
+</div>
+</div>
+</section>
+<!-- Contact Section -->
+<section id="contact" class="py-16">
+<div class="container mx-auto px-4">
+<div class="max-w-4xl mx-auto">
+<div class="text-center mb-12">
+<h2 class="text-3xl font-bold text-gray-900 mb-4">Get in Touch</h2>
+<p class="text-xl text-gray-600">Have questions or feedback? We'd love to hear from you.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+<h3 class="text-xl font-bold text-gray-900 mb-4">Contact Information</h3>
+<div class="space-y-4">
+<div class="flex items-center">
+<div class="w-10 h-10 flex items-center justify-center bg-blue-100 rounded-full mr-3">
+<i class="ri-mail-line text-primary"></i>
+</div>
+<div>
+<p class="text-gray-600">Email us at:</p>
+<a href="mailto:founder@climacast.app" class="text-primary font-medium">founder@climacast.app</a>
+</div>
+</div>
+<div class="flex items-center">
+<div class="w-10 h-10 flex items-center justify-center bg-blue-100 rounded-full mr-3">
+<i class="ri-facebook-fill text-primary"></i>
+</div>
+<div>
+<p class="text-gray-600">Find us on Facebook:</p>
+<a href="https://www.facebook.com/profile.php?id=61575788000545" target="_blank" class="text-primary font-medium">ClimaCast</a>
+</div>
+</div>
+<div class="flex items-center">
+<div class="w-10 h-10 flex items-center justify-center bg-blue-100 rounded-full mr-3">
+<i class="ri-instagram-line text-primary"></i>
+</div>
+<div>
+<p class="text-gray-600">Follow us on Instagram:</p>
+<a href="https://www.instagram.com/climacast13" target="_blank" class="text-primary font-medium">@climacast13</a>
+</div>
+</div>
+</div>
+</div>
+<div>
+<h3 class="text-xl font-bold text-gray-900 mb-4">Send us a Message</h3>
+<form class="space-y-4">
+<div>
+<label for="name" class="block text-gray-700 mb-1">Your Name</label>
+<input type="text" id="name" class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="Enter your name">
+</div>
+<div>
+<label for="email" class="block text-gray-700 mb-1">Email Address</label>
+<input type="email" id="email" class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="Enter your email">
+</div>
+<div>
+<label for="message" class="block text-gray-700 mb-1">Message</label>
+<textarea id="message" rows="4" class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="Enter your message"></textarea>
+</div>
+<button type="submit" class="bg-primary text-white px-6 py-3 !rounded-button whitespace-nowrap font-medium hover:bg-opacity-90 transition-all">
+Send Message
+</button>
+</form>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="bg-gray-900 text-white py-12">
+<div class="container mx-auto px-4">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+<div>
+<div class="flex items-center mb-4">
+<div class="w-10 h-10 flex items-center justify-center mr-2">
+<img src="https://readdy.ai/api/search-image?query=weather%2520app%2520logo%2520with%2520sun%2520and%2520cloud%2520and%2520hanger%2520icon%2C%2520blue%2520and%2520yellow%2520colors%2C%2520clean%2520modern%2520design%2C%2520professional%2520branding%2C%2520minimalist%2520style&width=100&height=100&seq=logo2&orientation=squarish" alt="ClimaCast Logo" class="h-10">
+</div>
+<span class="text-2xl font-bold">ClimaCast</span>
+</div>
+<p class="text-gray-400 mb-4">Your personal weather and style assistant delivered daily via WhatsApp.</p>
+<div class="flex space-x-4">
+<a href="https://www.facebook.com/profile.php?id=61575788000545" target="_blank" class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-primary transition-all">
+<i class="ri-facebook-fill"></i>
+</a>
+<a href="https://www.instagram.com/climacast13" target="_blank" class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-primary transition-all">
+<i class="ri-instagram-line"></i>
+</a>
+<a href="mailto:founder@climacast.app" class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-primary transition-all">
+<i class="ri-mail-line"></i>
+</a>
+</div>
+</div>
+<div>
+<h3 class="text-lg font-bold mb-4">Quick Links</h3>
+<ul class="space-y-2">
+<li><a href="#home" class="text-gray-400 hover:text-white transition-all">Home</a></li>
+<li><a href="#features" class="text-gray-400 hover:text-white transition-all">Features</a></li>
+<li><a href="#how-it-works" class="text-gray-400 hover:text-white transition-all">How It Works</a></li>
+<li><a href="#contact" class="text-gray-400 hover:text-white transition-all">Contact</a></li>
+</ul>
+</div>
+<div>
+<h3 class="text-lg font-bold mb-4">Legal</h3>
+<ul class="space-y-2">
+<li><a href="https://www.termsfeed.com/live/ac597e09-c3a5-427e-8d15-9ffa3856a686" target="_blank" class="text-gray-400 hover:text-white transition-all">Privacy Policy</a></li>
+<li><a href="https://www.termsfeed.com/live/aa1399bf-aeaf-449d-bb4c-4322915760c7" target="_blank" class="text-gray-400 hover:text-white transition-all">Terms of Service</a></li>
+</ul>
+</div>
+</div>
+<div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-500">
+<p>&copy; 2025 ClimaCast. All rights reserved.</p>
+</div>
+</div>
+</footer>
+<!-- Scripts -->
+<script id="mobile-menu-script">
+document.addEventListener('DOMContentLoaded', function() {
+const mobileMenuButton = document.getElementById('mobile-menu-button');
+const mobileMenu = document.getElementById('mobile-menu');
+mobileMenuButton.addEventListener('click', function() {
+mobileMenu.classList.toggle('hidden');
+});
+// Close mobile menu when clicking on a link
+const mobileLinks = mobileMenu.querySelectorAll('a');
+mobileLinks.forEach(link => {
+link.addEventListener('click', function() {
+mobileMenu.classList.add('hidden');
+});
+});
+});
+</script>
+<script id="smooth-scroll-script">
+document.addEventListener('DOMContentLoaded', function() {
+// Smooth scrolling for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+anchor.addEventListener('click', function(e) {
+e.preventDefault();
+const targetId = this.getAttribute('href');
+if (targetId === '#') return;
+const targetElement = document.querySelector(targetId);
+if (targetElement) {
+window.scrollTo({
+top: targetElement.offsetTop - 80, // Adjust for header height
+behavior: 'smooth'
+});
+}
+});
+});
+});
+</script>
+<script id="form-script">
+document.addEventListener('DOMContentLoaded', function() {
+const contactForm = document.querySelector('form');
+contactForm.addEventListener('submit', function(e) {
+e.preventDefault();
+const nameInput = document.getElementById('name');
+const emailInput = document.getElementById('email');
+const messageInput = document.getElementById('message');
+let isValid = true;
+
+if (!nameInput.value.trim()) {
+nameInput.classList.add('border-red-500');
+isValid = false;
+} else {
+nameInput.classList.remove('border-red-500');
+}
+
+if (!emailInput.value.trim() || !emailInput.value.includes('@')) {
+emailInput.classList.add('border-red-500');
+isValid = false;
+} else {
+emailInput.classList.remove('border-red-500');
+}
+
+if (!messageInput.value.trim()) {
+messageInput.classList.add('border-red-500');
+isValid = false;
+} else {
+messageInput.classList.remove('border-red-500');
+}
+
+if (isValid) {
+const formData = {
+name: nameInput.value.trim(),
+email: emailInput.value.trim(),
+message: messageInput.value.trim()
+};
+
+fetch('https://randomly-certain-coral.ngrok-free.app/webhook/10123423-3a53-4782-9def-cd271c972558', {
+method: 'POST',
+headers: {
+'Content-Type': 'application/json',
+},
+body: JSON.stringify(formData)
+})
+.then(response => {
+if (response.ok) {
+const successMessage = document.createElement('div');
+successMessage.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded shadow-lg';
+successMessage.textContent = 'Thank you for your message! We will get back to you soon.';
+document.body.appendChild(successMessage);
+setTimeout(() => successMessage.remove(), 3000);
+contactForm.reset();
+} else {
+throw new Error('Something went wrong');
+}
+})
+.catch(error => {
+const errorMessage = document.createElement('div');
+errorMessage.className = 'fixed top-4 right-4 bg-red-500 text-white px-6 py-3 rounded shadow-lg';
+errorMessage.textContent = 'Sorry, there was an error sending your message. Please try again.';
+document.body.appendChild(errorMessage);
+setTimeout(() => errorMessage.remove(), 3000);
+});
+}
+});
+});
+</script>
+</body>
+</html>
