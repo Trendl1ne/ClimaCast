@@ -565,39 +565,33 @@ isValid = false;
 messageInput.classList.remove('border-red-500');
 }
 if (isValid) {
-const formData = {
-name: nameInput.value.trim(),
-email: emailInput.value.trim(),
-message: messageInput.value.trim()
-};
-Promise.race([
-fetch('https://randomly-certain-coral.ngrok-free.app/webhook/10123423-3a53-4782-9def-cd271c972558', {
-method: 'POST',
-headers: {
-'Content-Type': 'application/json',
-},
-body: JSON.stringify(formData)
-}),
-fetch('https://n8n-bopk.onrender.com/webhook/10123423-3a53-4782-9def-cd271c972558', {
-method: 'POST',
-headers: {
-'Content-Type': 'application/json',
-},
-body: JSON.stringify(formData)
-})
-])
-.then(response => {
-document.getElementById('form-response-message').textContent = 'Thank you for your message! We will get back to you soon.';
-document.getElementById('form-response-message').classList.remove('hidden');
-contactForm.reset();
-})
-.catch(error => {
-const errorMessage = document.createElement('div');
-errorMessage.className = 'fixed top-4 right-4 bg-red-500 text-white px-6 py-3 rounded shadow-lg';
-errorMessage.textContent = 'Sorry, there was an error sending your message. Please try again.';
-document.body.appendChild(errorMessage);
-setTimeout(() => errorMessage.remove(), 3000);
-});
+  const formData = {
+    name: nameInput.value.trim(),
+    email: emailInput.value.trim(),
+    message: messageInput.value.trim()
+  };
+
+  // Immediately show confirmation and reset form
+  document.getElementById('form-response-message').textContent = 'Thank you for your message! We will get back to you soon.';
+  document.getElementById('form-response-message').classList.remove('hidden');
+  contactForm.reset();
+
+  // Send webhooks in background (no waiting)
+  fetch('https://randomly-certain-coral.ngrok-free.app/webhook/10123423-3a53-4782-9def-cd271c972558', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(formData)
+  });
+
+  fetch('https://n8n-bopk.onrender.com/webhook/10123423-3a53-4782-9def-cd271c972558', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(formData)
+  });
 }
 });
 });
