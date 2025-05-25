@@ -569,33 +569,29 @@ name: nameInput.value.trim(),
 email: emailInput.value.trim(),
 message: messageInput.value.trim()
 };
-Promise.all([
-  fetch('https://randomly-certain-coral.ngrok-free.app/webhook/10123423-3a53-4782-9def-cd271c972558', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(formData)
-  }),
-  fetch('https://n8n-bopk.onrender.com/webhook/10123423-3a53-4782-9def-cd271c972558', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(formData)
-  })
+Promise.race([
+fetch('https://randomly-certain-coral.ngrok-free.app/webhook/10123423-3a53-4782-9def-cd271c972558', {
+method: 'POST',
+headers: {
+'Content-Type': 'application/json',
+},
+body: JSON.stringify(formData)
+}),
+fetch('https://n8n-bopk.onrender.com/webhook/10123423-3a53-4782-9def-cd271c972558', {
+method: 'POST',
+headers: {
+'Content-Type': 'application/json',
+},
+body: JSON.stringify(formData)
+})
 ])
 .then(response => {
-if (response.ok) {
 const successMessage = document.createElement('div');
 successMessage.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded shadow-lg';
 successMessage.textContent = 'Thank you for your message! We will get back to you soon.';
 document.body.appendChild(successMessage);
 setTimeout(() => successMessage.remove(), 3000);
 contactForm.reset();
-} else {
-throw new Error('Something went wrong');
-}
 })
 .catch(error => {
 const errorMessage = document.createElement('div');
