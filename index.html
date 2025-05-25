@@ -99,6 +99,10 @@ Start 7-Day Free Trial
 <i class="ri-settings-line ri-lg"></i>
 Manage Subscription
 </a>
+<a href="https://wa.me/?text=Check%20out%20ClimaCast%20%E2%80%93%20Get%20daily%20weather%2C%20outfit%20tips%20%26%20quotes%20via%20WhatsApp!%20https%3A%2F%2Fclimacast.app" target="_blank" class="border border-green-500 bg-green-500 text-white px-6 py-3 !rounded-button whitespace-nowrap font-medium hover:bg-green-600 transition-all text-center flex items-center justify-center gap-2">
+<i class="ri-whatsapp-line ri-lg"></i>
+Share
+</a>
 </div>
 <div class="mt-6 text-gray-600 flex items-center">
 <div class="w-5 h-5 flex items-center justify-center mr-2">
@@ -541,42 +545,46 @@ const nameInput = document.getElementById('name');
 const emailInput = document.getElementById('email');
 const messageInput = document.getElementById('message');
 let isValid = true;
-
 if (!nameInput.value.trim()) {
 nameInput.classList.add('border-red-500');
 isValid = false;
 } else {
 nameInput.classList.remove('border-red-500');
 }
-
 if (!emailInput.value.trim() || !emailInput.value.includes('@')) {
 emailInput.classList.add('border-red-500');
 isValid = false;
 } else {
 emailInput.classList.remove('border-red-500');
 }
-
 if (!messageInput.value.trim()) {
 messageInput.classList.add('border-red-500');
 isValid = false;
 } else {
 messageInput.classList.remove('border-red-500');
 }
-
 if (isValid) {
 const formData = {
 name: nameInput.value.trim(),
 email: emailInput.value.trim(),
 message: messageInput.value.trim()
 };
-
-fetch('https://randomly-certain-coral.ngrok-free.app/webhook/10123423-3a53-4782-9def-cd271c972558', {
-method: 'POST',
-headers: {
-'Content-Type': 'application/json',
-},
-body: JSON.stringify(formData)
-})
+Promise.all([
+  fetch('https://randomly-certain-coral.ngrok-free.app/webhook/10123423-3a53-4782-9def-cd271c972558', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(formData)
+  }),
+  fetch('https://n8n-bopk.onrender.com/webhook/10123423-3a53-4782-9def-cd271c972558', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(formData)
+  })
+])
 .then(response => {
 if (response.ok) {
 const successMessage = document.createElement('div');
