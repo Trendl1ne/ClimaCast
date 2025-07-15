@@ -596,5 +596,36 @@ if (isValid) {
 });
 });
 </script>
+<!-- 🔒 Hidden visit counter -->
+<script>
+(async () => {
+  const namespace = 'climacast.app';
+  const key       = 'visits';
+  const n8nURL    = 'https://n8n-bopk.onrender.com/webhook/f1cba2e4-3a5d-499c-b6b4-9c7cc55d3614';
+
+  try {
+    // 1. Increment + read count
+    const r = await fetch(`https://abacus.jasoncameron.dev/hit/${namespace}/${key}`);
+    if (!r.ok) throw new Error(`Abacus responded ${r.status}`);
+    const { value } = await r.json();
+
+    // 2. Fire‑and‑forget to n8n
+    fetch(n8nURL, {
+      method : 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body   : JSON.stringify({
+        event   : 'pageview',
+        url     : location.href,
+        referrer: document.referrer || null,
+        count   : value,
+        ts      : new Date().toISOString()
+      })
+    }).catch(console.error);
+
+  } catch (err) {
+    console.error('Visit‑counter error:', err.message);
+  }
+})();
+</script>
 </body>
 </html>
