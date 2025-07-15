@@ -577,7 +577,7 @@ if (isValid) {
   contactForm.reset();
 
   // Send webhooks in background (no waiting)
-  fetch('https://n8n.muro-ai.com/webhook/10123423-3a53-4782-9def-cd271c972558https://n8n.muro-ai.com/webhook/10123423-3a53-4782-9def-cd271c972558', {
+  fetch('https://n8n.muro-ai.com/webhook/10123423-3a53-4782-9def-cd271c972558', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -596,20 +596,26 @@ if (isValid) {
 });
 });
 </script>
-<!-- 🔒 Hidden visit counter -->
+<!-- 🔒 Hidden visit counter  (updated 1‑per‑session) -->
 <script>
 (async () => {
-  const namespace = 'climacast.app';
-  const key       = 'visits';
+  /* ---------- CONFIG ---------- */
+  const namespace = 'climacast.app';           // leave as‑is
+  const key       = 'visits';                  // leave as‑is
   const n8nURL    = 'https://n8n-bopk.onrender.com/webhook/f1cba2e4-3a5d-499c-b6b4-9c7cc55d3614';
+  /* ----------------------------------------- */
+
+  /* ❌ 1.  Skip if we've already counted this tab */
+  if (sessionStorage.getItem('visited')) return;
+  sessionStorage.setItem('visited', '1');
 
   try {
-    // 1. Increment + read count
+    /* 2.  Increment + read count */
     const r = await fetch(`https://abacus.jasoncameron.dev/hit/${namespace}/${key}`);
     if (!r.ok) throw new Error(`Abacus responded ${r.status}`);
     const { value } = await r.json();
 
-    // 2. Fire‑and‑forget to n8n
+    /* 3.  Fire‑and‑forget to n8n */
     fetch(n8nURL, {
       method : 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -617,7 +623,7 @@ if (isValid) {
         event   : 'pageview',
         url     : location.href,
         referrer: document.referrer || null,
-        count   : value,
+        count   : value,                 // ← visit number
         ts      : new Date().toISOString()
       })
     }).catch(console.error);
